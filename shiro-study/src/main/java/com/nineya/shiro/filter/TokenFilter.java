@@ -40,7 +40,7 @@ public class TokenFilter extends BasicHttpAuthenticationFilter {
         if (isLoginAttempt(request, response)) {
             //如果存在，则进入 executeLogin 方法执行登入，检查 token 是否正确
             try {
-                executeLogin(request, response);
+                return executeLogin(request, response);
             } catch (Exception e) {
                 //token 错误
                 e.printStackTrace();
@@ -62,9 +62,7 @@ public class TokenFilter extends BasicHttpAuthenticationFilter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String token = httpServletRequest.getHeader(AUTHORIZATION_HEADER);
         BearerToken jwtToken = new BearerToken(token, request.getRemoteAddr());
-        ExceptionController.subject = getSubject(request, response);
-        ExceptionController.subject.login(jwtToken);
-        ExceptionController.subject = getSubject(request, response);
+        getSubject(request, response).login(jwtToken);
         return true;
     }
 }

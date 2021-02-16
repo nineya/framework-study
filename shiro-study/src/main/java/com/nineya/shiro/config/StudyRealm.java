@@ -18,6 +18,8 @@ import javax.annotation.Resource;
 import java.util.stream.Collectors;
 
 /**
+ * 自定义 realm
+ *
  * @author 殇雪话诀别
  * 2021/2/15
  */
@@ -33,7 +35,7 @@ public class StudyRealm extends AuthorizingRealm {
     }
 
     /**
-     * 授权，在认证之后仔细
+     * 授权，在认证之后执行
      * @param principals
      * @return
      */
@@ -70,7 +72,7 @@ public class StudyRealm extends AuthorizingRealm {
         if (user == null) {
             return null;
         }
-        // 第一个参数是主体，将会在授权时封装成PrincipalCollection进行使用，所以必须将jwt内容传回
+        // 第一个参数是主体，将会在授权时封装成PrincipalCollection.getPrimaryPrincipal()进行使用，所以必须将jwt内容传回
         // 第二个参数是认证信息，即密码，为后面验证可以通过，需要和token中的内容一样
         // 第三个参数是领域名称
         return new SimpleAuthenticationInfo(token.getPrincipal(), token.getCredentials(), user.getUserName());

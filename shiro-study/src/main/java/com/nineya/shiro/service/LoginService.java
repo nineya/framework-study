@@ -5,6 +5,7 @@ import com.nineya.shiro.entity.User;
 /**
  * @author 殇雪话诀别
  * 2021/2/15
+ * 用户登录服务接口
  */
 public interface LoginService {
 

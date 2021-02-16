@@ -1,22 +1,12 @@
 package com.nineya.shiro.controller;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import com.nineya.shiro.entity.User;
 import com.nineya.shiro.service.LoginService;
 import com.nineya.shiro.util.UserTokenUtil;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
-import org.apache.shiro.authz.annotation.RequiresUser;
-import org.apache.shiro.subject.Subject;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,6 +24,16 @@ public class LoginController {
     @Resource
     private UserTokenUtil tokenUtil;
 
+    /**
+     * 使用 jwt 进行登录时此处逻辑将有些不同
+     * 如果没有使用Token，用户将在此方法中通过 subject.login(usernamePasswordToken) 进行登录。
+     * 使用 jwt 时，将不再使用 session 存储登录状态，subject.login(usernamePasswordToken) 逻辑将在 Filter 解析 token 时进行，并且
+     * 每次请求都需要进行 token 解析和登录操作。
+     * 也就是说认证、授权两个步骤，原本只要登录时进行认证，每次请求进行授权，使用 jwt 后每次请求都需要记性jwt解析、认证和授权三个步骤。
+     * @param userName 用户名
+     * @param password 密码
+     * @return
+     */
     @GetMapping("/login")
     public String login(@RequestParam("userName") String userName, @RequestParam("password") String password) {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(password)) {
@@ -46,6 +46,7 @@ public class LoginController {
         return tokenUtil.createToken(userName);
     }
 
+    // 这是没有使用 jwt 时，基于 session 的实现方式
 //    @GetMapping("/login")
 //    public String login(User user) {
 //        if (StringUtils.isEmpty(user.getUserName()) || StringUtils.isEmpty(user.getPassword())) {
@@ -72,19 +73,31 @@ public class LoginController {
 //        return "login success";
 //    }
 
+    /**
+     * 允许角色为 read 且为 write 用户访问
+     * @return
+     */
     @RequiresRoles({"read", "write"})
     @GetMapping("/admin")
     public String admin() {
         return "admin";
     }
 
+    /**
+     * 允许拥有 select 权限的用户访问
+     * @return
+     */
     @RequiresPermissions("select")
     @GetMapping("/select")
     public String select() {
         return "select";
     }
 
-    @RequiresPermissions("user:create")
+    /**
+     * 允许拥有 create 权限的用户访问
+     * @return
+     */
+    @RequiresPermissions("create")
     @GetMapping("/create")
     public String create() {
         return "create";

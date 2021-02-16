@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * @author 殇雪话诀别
  * 2021/2/15
- * 用户
+ * 用户，包含角色集合
  */
 public class User {
     private long uid;

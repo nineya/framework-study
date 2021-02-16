@@ -24,10 +24,6 @@ public class UserTokenUtil {
      */
     private Algorithm algorithm;
     private JWTVerifier verifier;
-    /**
-     * token有效期时间
-     */
-    private static final int USEFUL_LIFE = 1800;
 
     public UserTokenUtil() {
         algorithm = Algorithm.HMAC256("secret");

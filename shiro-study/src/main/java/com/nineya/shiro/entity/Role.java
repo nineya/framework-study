@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * @author 殇雪话诀别
  * 2021/2/15
- * 角色
+ * 角色，包含权限集合
  */
 public class Role {
     private long id;

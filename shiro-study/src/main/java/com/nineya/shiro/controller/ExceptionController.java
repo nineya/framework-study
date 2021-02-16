@@ -9,15 +9,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * @author 殇雪话诀别
  * 2021/2/15
+ * 对未通过权限认证的部分异常进行异常处理
  */
 @ControllerAdvice
 public class ExceptionController {
 
-    public static Subject subject;
     @ExceptionHandler
     @ResponseBody
     public String ErrorHandler(AuthorizationException e) {
-        System.out.println(subject.getPrincipals());
         return "没有通过权限验证！\n" + e.getMessage();
     }
 }
