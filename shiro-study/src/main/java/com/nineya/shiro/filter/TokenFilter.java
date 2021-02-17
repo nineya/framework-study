@@ -1,6 +1,8 @@
 package com.nineya.shiro.filter;
 
 import com.nineya.shiro.controller.ExceptionController;
+import com.nineya.shiro.entity.JwtToken;
+import com.nineya.shiro.entity.LoginType;
 import org.apache.shiro.authc.BearerToken;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class TokenFilter extends BasicHttpAuthenticationFilter {
 
+    private static final String MANAGE_AUTHORIZATION = "Manage-Authorization";
     /**
      * 判断用户是否想要登入。
      * 检测header里面是否包含Authorization字段即可
@@ -21,8 +24,7 @@ public class TokenFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean isLoginAttempt(ServletRequest request, ServletResponse response) {
         HttpServletRequest req = (HttpServletRequest) request;
-        String authorization = req.getHeader(AUTHORIZATION_HEADER);
-        return authorization != null;
+        return req.getHeader(AUTHORIZATION_HEADER) != null || req.getHeader(MANAGE_AUTHORIZATION) != null;
     }
 
     /**
@@ -60,8 +62,17 @@ public class TokenFilter extends BasicHttpAuthenticationFilter {
     @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        LoginType loginType = null;
         String token = httpServletRequest.getHeader(AUTHORIZATION_HEADER);
-        BearerToken jwtToken = new BearerToken(token, request.getRemoteAddr());
+        if (token != null) {
+            loginType = LoginType.USER;
+        } else {
+            token = httpServletRequest.getHeader(MANAGE_AUTHORIZATION);
+            if (token != null) {
+                loginType = LoginType.MANAGE;
+            }
+        }
+        JwtToken jwtToken = new JwtToken(loginType, token, request.getRemoteAddr());
         getSubject(request, response).login(jwtToken);
         return true;
     }

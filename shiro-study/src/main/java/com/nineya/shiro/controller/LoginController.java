@@ -1,8 +1,10 @@
 package com.nineya.shiro.controller;
 
+import com.nineya.shiro.entity.Manage;
 import com.nineya.shiro.entity.User;
 import com.nineya.shiro.service.LoginService;
 import com.nineya.shiro.util.UserTokenUtil;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.util.StringUtils;
@@ -30,6 +32,7 @@ public class LoginController {
      * 使用 jwt 时，将不再使用 session 存储登录状态，subject.login(usernamePasswordToken) 逻辑将在 Filter 解析 token 时进行，并且
      * 每次请求都需要进行 token 解析和登录操作。
      * 也就是说认证、授权两个步骤，原本只要登录时进行认证，每次请求进行授权，使用 jwt 后每次请求都需要记性jwt解析、认证和授权三个步骤。
+     *
      * @param userName 用户名
      * @param password 密码
      * @return
@@ -44,6 +47,19 @@ public class LoginController {
             return "密码不正确！";
         }
         return tokenUtil.createToken(userName);
+    }
+
+    @GetMapping("/manageLogin")
+    public String manageLogin(@RequestParam("id") long id, @RequestParam("password") String password) {
+        if (StringUtils.isEmpty(password)) {
+            return "请输入密码！";
+        }
+        Manage manage = loginService.getManageById(id);
+        if (!manage.getPassword().equals(password)) {
+            return "密码不正确！";
+        }
+        // 示例中简单复用 User 的 token
+        return tokenUtil.createToken(String.valueOf(id));
     }
 
     // 这是没有使用 jwt 时，基于 session 的实现方式
@@ -75,6 +91,7 @@ public class LoginController {
 
     /**
      * 允许角色为 read 且为 write 用户访问
+     *
      * @return
      */
     @RequiresRoles({"read", "write"})
@@ -85,6 +102,7 @@ public class LoginController {
 
     /**
      * 允许拥有 select 权限的用户访问
+     *
      * @return
      */
     @RequiresPermissions("select")
@@ -95,11 +113,32 @@ public class LoginController {
 
     /**
      * 允许拥有 create 权限的用户访问
+     *
      * @return
      */
     @RequiresPermissions("create")
     @GetMapping("/create")
     public String create() {
         return "create";
+    }
+
+    /**
+     * 要求管理员角色
+     * @return
+     */
+    @RequiresRoles("manage")
+    @GetMapping("/manage")
+    public String manage() {
+        return "manage";
+    }
+
+    /**
+     * 要求update 权限，该权限只有管理员拥有
+     * @return
+     */
+    @RequiresPermissions("update")
+    @GetMapping("/update")
+    public String update() {
+        return "update";
     }
 }

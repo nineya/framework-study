@@ -1,5 +1,6 @@
 package com.nineya.shiro.service;
 
+import com.nineya.shiro.entity.Manage;
 import com.nineya.shiro.entity.User;
 
 /**
@@ -16,4 +17,11 @@ public interface LoginService {
      * @return
      */
     User getUserByName(String name);
+
+    /**
+     * 通过管理员id获取管理员信息
+     * @param mid
+     * @return
+     */
+    Manage getManageById(long mid);
 }

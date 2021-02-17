@@ -1,5 +1,6 @@
 package com.nineya.shiro.service.impl;
 
+import com.nineya.shiro.entity.Manage;
 import com.nineya.shiro.entity.Permissions;
 import com.nineya.shiro.entity.Role;
 import com.nineya.shiro.entity.User;
@@ -17,6 +18,7 @@ import java.util.*;
 @Service
 public class LoginServiceImpl implements LoginService {
     private final Map<String, User> users = new HashMap<>();
+    private final Map<Long, Manage> manages = new HashMap<>();
 
     public LoginServiceImpl() {
         // 定义三个权限
@@ -30,10 +32,20 @@ public class LoginServiceImpl implements LoginService {
         users.put("observe", new User(1, "observe", "123456", Collections.singleton(role1)));
         users.put("admin", new User(1, "admin", "123456", Collections.singleton(role2)));
         users.put("user", new User(1, "user", "123456", new HashSet<Role>(){{add(role1); add(role2);}}));
+
+        // 定义一个 manage角色，拥有所有权限
+        Permissions permissions4 = new Permissions(4, "update");
+        Role role3 = new Role(1, "manage", new HashSet<Permissions>(){{add(permissions1);add(permissions2);add(permissions3);add(permissions4);}});
+        manages.put(1L, new Manage(1, "123456", Collections.singleton(role3)));
     }
 
     @Override
     public User getUserByName(String name) {
         return users.get(name);
+    }
+
+    @Override
+    public Manage getManageById(long mid) {
+        return manages.get(mid);
     }
 }
