@@ -12,6 +12,7 @@
         <module>shiro-study</module>
         <module>netty-study</module>
         <module>lucene-study</module>
+        <module>spring-study</module>
     </modules>
 
     <build>
