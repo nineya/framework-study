@@ -13,6 +13,7 @@
         <module>netty-study</module>
         <module>lucene-study</module>
         <module>spring-study</module>
+        <module>ansj-study</module>
     </modules>
 
     <build>
