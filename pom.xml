@@ -15,6 +15,7 @@
         <module>spring-study</module>
         <module>ansj-study</module>
         <module>hanlp-study</module>
+        <module>ikanalyzer-study</module>
     </modules>
 
     <build>
