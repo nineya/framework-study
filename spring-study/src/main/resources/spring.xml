@@ -4,7 +4,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
  http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean class="com.nineya.spring.entity.BeanProcess" id="user" init-method="init" destroy-method="destroy">
+    <bean class="com.nineya.spring.entity.BeanProcess" name="test" init-method="init" destroy-method="destroy">
         <property name="name" value="test" />
     </bean>
 

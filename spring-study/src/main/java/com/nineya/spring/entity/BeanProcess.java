@@ -1,13 +1,15 @@
 package com.nineya.spring.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
-@Data
-@Component
+@Getter
+@Setter
+@Component("test")
 public class BeanProcess {
     private String name;
 
