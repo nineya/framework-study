@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
 public class NineyaBeanPostProcessor implements BeanPostProcessor {
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        System.out.println("BeanPostProcessor.postProcessAfterInitialization(" + beanName + ") 后置处理器");
+        System.out.println("BeanPostProcessor.postProcessAfterInitialization(" + beanName + ") 后置处理器：" + bean);
         return bean;
     }
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        System.out.println("BeanPostProcessor.postProcessBeforeInitialization(" + beanName + ") 后置处理器");
+        System.out.println("BeanPostProcessor.postProcessBeforeInitialization(" + beanName + ") 后置处理器：" + bean);
         return bean;
     }
 }
