@@ -4,11 +4,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
  http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean class="com.nineya.spring.entity.BeanProcess" name="test" init-method="initMethod" destroy-method="destroyMethod">
+    <bean class="com.nineya.spring.bean.register.entity.BeanProcess" name="test" init-method="initMethod" destroy-method="destroyMethod">
         <property name="name" value="test" />
     </bean>
 
     <!-- 注册处理器 -->
-    <bean class="com.nineya.spring.processor.NineyaBeanPostProcessor"/>
-    <bean class="com.nineya.spring.processor.NineyaBeanFactoryPostProcessor"/>
+    <bean class="com.nineya.spring.bean.register.processor.NineyaBeanPostProcessor"/>
+    <bean class="com.nineya.spring.bean.register.processor.NineyaBeanFactoryPostProcessor"/>
 </beans>
