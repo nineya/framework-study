@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Configuration
+@ComponentScan("com.nineya.spring.aop")
 @EnableAspectJAutoProxy
 public class AopConfiguration {
     @Bean(value = "test")
