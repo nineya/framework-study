@@ -6,6 +6,8 @@ import lombok.ToString;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ResourceLoaderAware;
+import org.springframework.core.io.ResourceLoader;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -13,7 +15,7 @@ import javax.annotation.PreDestroy;
 @Getter
 @Setter
 @ToString
-public class BeanProcess implements BeanNameAware, InitializingBean, DisposableBean {
+public class BeanProcess implements BeanNameAware, ResourceLoaderAware, InitializingBean, DisposableBean {
     private String name;
     
     @PostConstruct
@@ -21,9 +23,19 @@ public class BeanProcess implements BeanNameAware, InitializingBean, DisposableB
         System.out.println("Bean @PostConstruct: name = " + name);
     }
 
+    @PostConstruct
+    public void init2() {
+        System.out.println("Bean @PostConstruct2: name = " + name);
+    }
+
     @PreDestroy
     public void preDestroy() {
         System.out.println("Bean @PreDestroy: name = " + name);
+    }
+
+    @PreDestroy
+    public void preDestroy2() {
+        System.out.println("Bean @PreDestroy2: name = " + name);
     }
 
     @Override
@@ -47,5 +59,10 @@ public class BeanProcess implements BeanNameAware, InitializingBean, DisposableB
     @Override
     public void setBeanName(String beanName) {
         System.out.println("Bean BeanNameAware: beanName = " + beanName + ", name = " + name);
+    }
+
+    @Override
+    public void setResourceLoader(ResourceLoader resourceLoader) {
+        System.out.println("Bean ResourceLoaderAware: resourceLoader = " + resourceLoader + ", name = " + name);
     }
 }

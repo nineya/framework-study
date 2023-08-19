@@ -1,0 +1,1 @@
+package com.nineya.spring.aop;import lombok.Data;@Datapublic class BeanObject {    private String name;    public void run(String newName) {        System.out.println("执行中：oldName = " + name + ", newName = " + newName);        this.name = newName;    }}
