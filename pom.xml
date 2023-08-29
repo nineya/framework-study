@@ -17,6 +17,7 @@
         <module>hanlp-study</module>
         <module>ikanalyzer-study</module>
         <module>springboot-study</module>
+        <module>elasticsearch-study</module>
     </modules>
 
     <build>
