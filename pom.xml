@@ -18,6 +18,7 @@
         <module>ikanalyzer-study</module>
         <module>springboot-study</module>
         <module>elasticsearch-study</module>
+        <module>jdk-study</module>
     </modules>
 
     <build>
